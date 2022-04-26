@@ -3,10 +3,10 @@
 
 {% block columns %}
     <tr>
-        <th scope="col">Nro</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Opciones</th>
-    
+        <th scope="col" style="width: 10%">Nro</th>
+        <th scope="col" style="width: 20%">Nombre</th>
+        <th scope="col" style="width: 50%">Descripcion</th>
+        <th scope="col" style="width: 20%">Opciones</th>
     </tr>    
 {% endblock%}
 
@@ -16,11 +16,15 @@
         <tr>
             <td>{{ c.id }}</td>
             <td> {{ c.name }} </td>
+            <td> {{ c.desc }} </td>  
             <td>
                 <a href=" {% url 'category_update' c.id %} " class="btn btn-warning btn-xs">
                     <i class="fa fa-edit" aria-hidden="true"></i>
                 </a>
-                <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                <a href=" {% url 'category_delete' c.id %} " class="btn btn-danger btn-xs">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                </a>
+              
              </td>
         </tr>
      {% endfor %}   
