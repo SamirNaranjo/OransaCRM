@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.template import Context
 from django.urls import reverse_lazy
 from core.models import Category
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, FormView
 from core.forms import *
 
@@ -13,6 +15,10 @@ from core.forms import *
 class CategoryListView(ListView):
     model = Category
     template_name = 'list_category.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return Category.objects.all()
@@ -33,17 +39,11 @@ class CategoryCreateView(CreateView):
     template_name = 'create.html'
     success_url = reverse_lazy('category_list')
 
-    # def post(self, request, *args,  **kwargs):
-    #     print(request.POST)
-    #     form = CategoryForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #         return HttpResponseRedirect(self.success_url)
-    #     self.object = None
-    #     context= self.get_context_data(**kwargs)
-    #     context['form']= form
-    #     return render (request, self.template_name, context)
-     
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Crear Una Categoria'
@@ -59,6 +59,12 @@ class CategoryUpdateView(UpdateView):
     template_name = 'create.html'
     success_url = reverse_lazy('category_list')
 
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Edición de Categoria'
@@ -73,6 +79,11 @@ class CategoryDeleteView(DeleteView):
     template_name = "delete.html"
     success_url = reverse_lazy('category_list')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Eliminacion de Categoria'
@@ -84,6 +95,12 @@ class CategoryFormView(FormView):
     form_class= CategoryForm
     template_name='create.html'
     success_url = reverse_lazy('category_list')
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def form_invalid(self, form): 
+        return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
