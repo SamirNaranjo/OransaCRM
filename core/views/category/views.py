@@ -23,7 +23,7 @@ class CategoryListView(ListView):
     def get_queryset(self):
         return Category.objects.all()
 
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Listado De Categorias'
@@ -41,9 +41,9 @@ class CategoryCreateView(CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        # self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Crear Una Categoria'
@@ -99,7 +99,7 @@ class CategoryFormView(FormView):
     def form_valid(self, form):
         return super().form_valid(form)
 
-    def form_invalid(self, form): 
+    def form_invalid(self, form):
         return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):

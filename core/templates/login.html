@@ -31,7 +31,7 @@
                 <p class="login-box-msg">Sign in to start your session</p>
 
                 <form action="." method="post">
-                    <input type="hidden" name="next" value=" {{ next }} ">
+                    <!-- <input type="hidden" name="next" value=" {{ next }} "> -->
                     {% csrf_token %}
                     <div class="input-group mb-3">
                         {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su Username' }}
