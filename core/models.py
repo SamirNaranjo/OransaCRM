@@ -3,6 +3,9 @@ from email.policy import default
 from django.db import models
 from django.utils import timezone
 from core.choices import gender_choices
+from django.db import models
+from django.conf import settings
+
 # Create your models here.
 class Type(models.Model): # --- CREACION MODELO TIPO ---
     name = models.CharField(verbose_name='Nombre', max_length=50,)
@@ -111,3 +114,16 @@ class DetSale(models.Model):
         verbose_name = 'Detalle de Venta'
         verbose_name_plural = 'Detalle de Ventas'
         ordering = ['id']
+
+
+
+class BaseModel(models.Model):
+    user_creation = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_creation',
+                                      null=True, blank=True)
+    date_creation = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user_updated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_updated',
+                                      null=True, blank=True)
+    date_updated = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+    class Meta:
+        abstract = True
