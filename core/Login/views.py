@@ -1,8 +1,10 @@
 from multiprocessing import context
 from django.conf import Settings
+from django.contrib.auth import login
 from django.contrib.auth.views import LoginView,LogoutView
-from django.shortcuts import redirect
-from django.views.generic import RedirectView
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect, render
+from django.views.generic import RedirectView, View
 from Proyecto_oransa.settings import LOGIN_REDIRECT_URL
 
 class LoginFormView(LoginView):
@@ -17,3 +19,22 @@ class LoginFormView(LoginView):
         context= super().get_context_data(**kwargs)
         context['title']= 'Iniciar Sesion'
         return context
+
+
+class Registro(View):
+
+     def get(self, request):
+         form=UserCreationForm()
+         return render(request, "create_user.html", {'form':form})
+        
+     def post(self, request):
+        form=UserCreationForm(request.POST)
+         
+        if form.is_valid():
+            usuario= form.save()
+            login(request, usuario)
+            return redirect('index')
+        else:
+            pass
+
+    
