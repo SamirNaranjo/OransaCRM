@@ -5,7 +5,9 @@ from django.contrib.auth.views import LoginView,LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, render
 from django.views.generic import RedirectView, View
+from django.contrib.auth.models import User
 from Proyecto_oransa.settings import LOGIN_REDIRECT_URL
+
 
 class LoginFormView(LoginView):
     template_name='login.html'
@@ -22,19 +24,21 @@ class LoginFormView(LoginView):
 
 
 class Registro(View):
-
-     def get(self, request):
-         form=UserCreationForm()
-         return render(request, "create_user.html", {'form':form})
-        
-     def post(self, request):
-        form=UserCreationForm(request.POST)
-         
-        if form.is_valid():
-            usuario= form.save()
-            login(request, usuario)
-            return redirect('index')
-        else:
-            pass
-
     
+    class Meta:
+        model = User
+        fields = ('__all__')
+        
+    def get(self, request):
+          form=UserCreationForm()
+          return render(request, "create_user.html", {'form':form})
+        
+    def post(self, request):
+         form=UserCreationForm(request.POST)
+         
+         if form.is_valid():
+             usuario= form.save()
+             login(request, usuario)
+             return redirect('index')
+         else:
+             pass
