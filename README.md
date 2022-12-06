@@ -1,6 +1,1 @@
-# OransaCRM
 
-
-# LINK VIDEO EXPLICATIVO- FASE DE PRUEBA
-
-https://vimeo.com/709725727
